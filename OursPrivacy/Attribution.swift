@@ -69,9 +69,13 @@ public func parseAttributionFromURL(_ url: String) -> AttributionResult {
     )
 }
 
+// MARK: - Attribution parsing helpers
+
 private func parseQueryParams(_ url: String) -> [String: String] {
+    // Only a query before the fragment may supply attribution or visitor identity.
     guard !url.isEmpty,
-          let questionMark = url.firstIndex(of: "?") else {
+          let questionMark = url.firstIndex(of: "?"),
+          !url[..<questionMark].contains("#") else {
         return [:]
     }
     let afterQ = url.index(after: questionMark)
@@ -101,3 +105,5 @@ private func extractKeys(_ source: [String: String], keys: [String]) -> [String:
     }
     return out.isEmpty ? nil : out
 }
+
+// MARK: - End attribution parsing helpers
